@@ -22,8 +22,8 @@ cook_book = {}
 for x in list_with_list:
    cook_book[x[0]] = x[2:len(x)]
 
-
 #Убирает символ "|" из "Яйцо | 2 | шт" и запихивает Яйцо,2,шт как значение словаря {'ingredient_name': 'Яйцо ', 'quantity': ' 2 ', 'measure': ' шт'}
+#Формируем словарь для задания №1
 for big_key in cook_book.keys():
     with_split = []
     dict_after_split = {}
@@ -34,6 +34,43 @@ for big_key in cook_book.keys():
         dict_after_split['measure'] = x2[2]
         with_split.append(dict_after_split)
         dict_after_split = {}
-        cook_book[big_key] = with_split    
+    cook_book[big_key] = with_split    
 
-print(cook_book)
+#print(cook_book)
+
+
+
+
+#Задание №2 
+#Нужно написать функцию, которая на вход принимает список блюд из cook_book и количество персон для кого мы будем готовить
+
+new_dict_for_menu = {}
+def get_shop_list_by_dishes(dishes, person_count):
+    for x in dishes:
+        for x2 in range(len(cook_book[x])):
+            new_dict_for_menu[cook_book[x][x2]['ingredient_name']] = \
+{'measure': cook_book[x][x2]['measure'], 'quantity': (int(cook_book[x][x2]['quantity']) * int(person_count))}
+    print(new_dict_for_menu)
+
+get_shop_list_by_dishes(['Фахитос', 'Омлет'], 2)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
