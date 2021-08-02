@@ -19,7 +19,6 @@ def read_json(file_path, max_len_word=6):
             description_words.extend(description)
         print(description_words)
 
-
 read_json('./lesson9/newsafr.json')
 
 
