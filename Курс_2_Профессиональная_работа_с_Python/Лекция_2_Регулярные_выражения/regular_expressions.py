@@ -1,3 +1,7 @@
+#1. поместить Фамилию, Имя и Отчество человека в поля lastname, firstname и surname соответственно. В записной книжке изначально может быть Ф + ИО, ФИО, а может быть сразу правильно: Ф+И+О;
+#2. привести все телефоны в формат +7(999)999-99-99. Если есть добавочный номер, формат будет такой: +7(999)999-99-99 доб.9999;
+#3. объединить все дублирующиеся записи о человеке в одну.
+
 import csv
 import re
 
@@ -57,26 +61,27 @@ def create_dict_surname(feo_plus_index):
     #print(surname_for_dict)
 
 feo_plus_index(contacts_list)
-create_dict_surname(feo_plus_index(contacts_list))    
-
+print()
+print(create_dict_surname(feo_plus_index(contacts_list)))    
 
 #У меня есть словарь с {ФИО:[СТРОЧКИ]} 
 #Теперь для каждого ФИО я должен в его строчке или строчках найти все что нужно по задаче 
 #Берем строку делаем поиск регулярками, ответы записываем в новый список 
 #И так по всем пользователям 
 
+#lastname,firstname,surname,organization,position,phone,email
+#Объединяем все строчки где встретилась фамилия в один список, чтобы начать "распарсивать" 
 
-#Заново получить ФИО из строчки или строчек 
-
-u = ''
-for x in create_dict_surname(feo_plus_index(contacts_list))['Мартиняхин']:
+wow_list = []
+for x in create_dict_surname(feo_plus_index(contacts_list))['Лагунцов']:
+    print(x)
     for x2 in contacts_list[x]:
-        print(type(x2))
         if x2 != '':
-            u += ''.join(x2)
+            wow_list.append(x2)
 
-print(u)
-
+print()            
+print(wow_list)
+print()
 
 
 
