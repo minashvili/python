@@ -70,18 +70,29 @@ print(create_dict_surname(feo_plus_index(contacts_list)))
 #И так по всем пользователям 
 
 #lastname,firstname,surname,organization,position,phone,email
-#Объединяем все строчки где встретилась фамилия в один список, чтобы начать "распарсивать" 
+#Объединяем все строчки где встретилась фамилия в один список, ч
+#тобы начать "распарсивать" 
+#print(create_dict_surname(feo_plus_index(contacts_list))['Усольцев'])
 
+
+
+
+
+surname = 'Наркаев'
 wow_list = []
-for x in create_dict_surname(feo_plus_index(contacts_list))['Лагунцов']:
-    print(x)
-    for x2 in contacts_list[x]:
-        if x2 != '':
-            wow_list.append(x2)
+for x in [create_dict_surname(feo_plus_index(contacts_list))[surname]]:
+    if type(x) == int:
+        print(f'Не список {x}')
+        print(contacts_list[x])
+    else:
+        print(f'Список {x}')
+        for x2 in x:
+            #print(contacts_list[x2])
+            for x3 in contacts_list[x2]:
+                if x3 != '':
+                    wow_list.append(x3) 
 
-print()            
 print(wow_list)
-print()
 
 
 
