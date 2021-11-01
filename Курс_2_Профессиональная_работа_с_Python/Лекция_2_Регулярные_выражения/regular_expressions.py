@@ -76,14 +76,15 @@ print(create_dict_surname(feo_plus_index(contacts_list)))
 
 
 
-
-
-surname = 'Наркаев'
+surname = 'Мартиняхин'
 wow_list = []
 for x in [create_dict_surname(feo_plus_index(contacts_list))[surname]]:
     if type(x) == int:
         print(f'Не список {x}')
-        print(contacts_list[x])
+        for x2 in contacts_list[x]:
+            if x2 != '':
+                wow_list.append(x2)
+
     else:
         print(f'Список {x}')
         for x2 in x:
