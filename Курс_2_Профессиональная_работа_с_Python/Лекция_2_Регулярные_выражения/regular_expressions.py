@@ -9,7 +9,7 @@ with open("./text_storage.csv") as f:
     rows = csv.reader(f, delimiter=",")
     contacts_list = list(rows)
 
-#Созданание словаря feo_plus_index, в каждой строче файла регуляркой искать ФИО и в конце сделать словавь по примеру  key=ИНДЕКС СТРОЧКИ  val=НАЙДЕННОЕ ФИО
+#Созданание словаря feo_plus_index, в каждой строчке файла регуляркой искать ФИО и в конце сделать словавь по примеру  key=ИНДЕКС СТРОЧКИ  val=НАЙДЕННОЕ ФИО
 def feo_plus_index(contacts_list1):
 
     errors = 0
@@ -25,6 +25,8 @@ def feo_plus_index(contacts_list1):
         except:
             errors = errors + 1
     return feo_plus_index
+#print(feo_plus_index(contacts_list))
+#print()
 
 #Функция получения словаря где key = Фамилия value = Список с номерами строчек c этой фамилией   
 def create_dict_surname(feo_plus_index):
@@ -58,42 +60,60 @@ def create_dict_surname(feo_plus_index):
         surname_for_dict[x] = out_list[x]
 
     return surname_for_dict
-    #print(surname_for_dict)
+#print(create_dict_surname(feo_plus_index(contacts_list)))    
+#print()
 
-feo_plus_index(contacts_list)
-print()
-print(create_dict_surname(feo_plus_index(contacts_list)))    
+#Функция, создает список со всеми строчками по переданной фамилии 
+def create_list_str(surname):
 
-#У меня есть словарь с {ФИО:[СТРОЧКИ]} 
-#Теперь для каждого ФИО я должен в его строчке или строчках найти все что нужно по задаче 
-#Берем строку делаем поиск регулярками, ответы записываем в новый список 
-#И так по всем пользователям 
-
-#lastname,firstname,surname,organization,position,phone,email
-#Объединяем все строчки где встретилась фамилия в один список, ч
-#тобы начать "распарсивать" 
-#print(create_dict_surname(feo_plus_index(contacts_list))['Усольцев'])
-
-
-
-surname = 'Мартиняхин'
-wow_list = []
-for x in [create_dict_surname(feo_plus_index(contacts_list))[surname]]:
-    if type(x) == int:
-        print(f'Не список {x}')
-        for x2 in contacts_list[x]:
-            if x2 != '':
+    wow_list = []
+    for x in [create_dict_surname(feo_plus_index(contacts_list))[surname]]:
+        if type(x) == int:
+            #print(f'Не список {x}')
+            for x2 in contacts_list[x]:
+                #if x2 != '':
                 wow_list.append(x2)
-
-    else:
-        print(f'Список {x}')
-        for x2 in x:
-            #print(contacts_list[x2])
-            for x3 in contacts_list[x2]:
-                if x3 != '':
+        else:
+            #print(f'Список {x}')
+            for x2 in x:
+                #print(contacts_list[x2])
+                for x3 in contacts_list[x2]:
+                    #if x3 != '':
                     wow_list.append(x3) 
 
-print(wow_list)
+    return wow_list
+#print(create_list_str('Мартиняхин'))
+#print()
+
+
+
+
+
+#Найти имена 
+#^([А-я\d]+(?:( |,)[А-я\d]{2,}( |,)[А-я\d]{2,}))|^([А-я\d]+(?:( |,)[А-я\d]{2,}))
+#Найти емаил
+#[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}
+#Найти телефон 
+#(\+7|8)[- _]*\(?[- _]*(\d{3}[- _]*\)?([- _]*\d){7}|\d\d[- _]*\d\d[- _]*\)?([- _]*\d){6}).*,
+
+#Функция принимает список с строчками 
+#lastname,firstname,surname,organization,position,phone,email
+
+#Достать фио из списка
+def serarc_fio(surname):
+    u = ' '.join(create_list_str(surname)) 
+    name = re.search(r'^([А-я\d]+(?:( |,)[А-я\d]{2,}( |,)[А-я\d]{2,}))|^([А-я\d]+(?:( |,)[А-я\d]{2,}))', u)
+    return name.group(0)
+
+print(serarc_fio('Лагунцов'))
+
+#Достать Емаил из списка 
+def serarc_email(surname):
+    u = ' '.join(create_list_str(surname)) 
+    name = re.search(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}', u)
+    return name.group(0)
+
+print(serarc_email('Лагунцов'))
 
 
 
@@ -103,6 +123,22 @@ print(wow_list)
 
 
 
+
+
+
+
+
+
+
+
+
+
+#Регулярками найти
+#1 Найти ФИО записать в список 
+#2 Найти Организацию записать в список 
+#3 Найти Должность записать в список
+#4 Найти телефон записать в список 
+#5 Найти емаил записать в список 
 
 
 
