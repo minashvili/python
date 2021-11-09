@@ -16,19 +16,19 @@ def feo_plus_index(contacts_list1):
     feo_plus_index = {}                                       #Словарь Ключи = 'Индекс строчки списка где искала регулярка', Значение = 'Найденное регуляркой ФИО'
     for x in contacts_list1:
         u = (','.join(str(z) for z in x))
-        #print(u)
         name = re.search(r'^([А-я\d]+(?:( |,)[А-я\d]{2,}( |,)[А-я\d]{2,}))|^([А-я\d]+(?:( |,)[А-я\d]{2,}))', u)
-        try:    #Убрал в исключения ошибки если регулярка ничего не находит в строчке 
+        try:                                                       #Убрал в исключения ошибки если регулярка ничего не находит в строчке 
             key_for_dict = re.split(',| ', name.group(0))          #Сохраняю в переменную то что нашла регулярка 
             val_for_dict = contacts_list1.index(x)                 #Сохраняю в переменную индекс строчки где искала регулярка 
             feo_plus_index[val_for_dict] = key_for_dict            #Леплю словарь
         except:
             errors = errors + 1
     return feo_plus_index
-#print(feo_plus_index(contacts_list))
-#print()
+# print()
+# print(feo_plus_index(contacts_list))
+# print()
 
-#Функция получения словаря где key = Фамилия value = Список с номерами строчек c этой фамилией   
+#Функция получения словаря где key = Фамилия value = Список со всеми номерами строчек где встречается фамилия   
 def create_dict_surname(feo_plus_index):
 
     #Создание словаря с уникальным ФИО и значением объедененных строчек
@@ -36,7 +36,7 @@ def create_dict_surname(feo_plus_index):
     double_string2 = {}
     for x, y in feo_plus_index.items():          #x - номер строк в сроваре contacts_list, y - список с ФИО 
         for x2, y2 in feo_plus_index.items():
-            if 100 - (sum(i != j for i, j in zip(y, y2)) / float(len(y))) * 100 == 100.0:
+            if 100 - (sum(i != j for i, j in zip(y, y2)) / float(len(y))) * 100 == 100.0:  #Cложный не мой алгоритм
                 if x != x2:
                     double_string.append(y[0])                                                                                             # получаю словать где одинаковые ФИО но разные строчки в основном файле 
                     double_string2[x] = y
@@ -60,60 +60,89 @@ def create_dict_surname(feo_plus_index):
         surname_for_dict[x] = out_list[x]
 
     return surname_for_dict
-#print(create_dict_surname(feo_plus_index(contacts_list)))    
-#print()
+# print(create_dict_surname(feo_plus_index(contacts_list)))
+# print()
 
-#Функция, создает список со всеми строчками по переданной фамилии 
+#Функция, объединяет все существующие строчки в которых находит поданную фамилию и делат один большой список
 def create_list_str(surname):
 
     wow_list = []
     for x in [create_dict_surname(feo_plus_index(contacts_list))[surname]]:
         if type(x) == int:
-            #print(f'Не список {x}')
             for x2 in contacts_list[x]:
-                #if x2 != '':
                 wow_list.append(x2)
         else:
-            #print(f'Список {x}')
             for x2 in x:
-                #print(contacts_list[x2])
                 for x3 in contacts_list[x2]:
-                    #if x3 != '':
                     wow_list.append(x3) 
 
     return wow_list
-#print(create_list_str('Мартиняхин'))
-#print()
+# print(create_list_str('Мартиняхин'))
+# print()
 
-
-
-
-
-#Найти имена 
-#^([А-я\d]+(?:( |,)[А-я\d]{2,}( |,)[А-я\d]{2,}))|^([А-я\d]+(?:( |,)[А-я\d]{2,}))
-#Найти емаил
-#[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}
-#Найти телефон 
-#(\+7|8)[- _]*\(?[- _]*(\d{3}[- _]*\)?([- _]*\d){7}|\d\d[- _]*\d\d[- _]*\)?([- _]*\d){6}).*,
-
-#Функция принимает список с строчками 
-#lastname,firstname,surname,organization,position,phone,email
-
-#Достать фио из списка
+#Достать фио из списка функции create_list_str
 def serarc_fio(surname):
-    u = ' '.join(create_list_str(surname)) 
-    name = re.search(r'^([А-я\d]+(?:( |,)[А-я\d]{2,}( |,)[А-я\d]{2,}))|^([А-я\d]+(?:( |,)[А-я\d]{2,}))', u)
-    return name.group(0)
+    try:
+        u = ' '.join(create_list_str(surname)) 
+        name = re.search(r'^([А-я\d]+(?:( |,)[А-я\d]{2,}( |,)[А-я\d]{2,}))|^([А-я\d]+(?:( |,)[А-я\d]{2,}))', u)
+        return name.group(0)
+    except:
+        return f'Фио не указано'
 
-print(serarc_fio('Лагунцов'))
-
-#Достать Емаил из списка 
+#Достать Емаил из списка функции create_list_str 
 def serarc_email(surname):
-    u = ' '.join(create_list_str(surname)) 
-    name = re.search(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}', u)
-    return name.group(0)
+    try:
+        u = ' '.join(create_list_str(surname)) 
+        name = re.search(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}', u)
+        return name.group(0)
+    except:
+        return f'Емал не указан'   
 
-print(serarc_email('Лагунцов'))
+#Достать место работы из списка функции create_list_str 
+def serarc_organiza(surname):
+    return create_list_str(surname)[3]
+
+#Достать позицию из списка функции create_list_str 
+def serarc_position(surname):
+    try:
+        if create_list_str(surname)[4] == '':
+            return create_list_str(surname)[11]
+        else:
+            return create_list_str(surname)[4] 
+    except:
+        return f'Позиция не указана'
+
+#Привести все телефоны в формат +7(999)999-99-99. Если есть добавочный номер, формат будет такой: +7(999)999-99-99 доб.9999; из списка функции create_list_str
+def serarc_phone(surname):
+    try: 
+        u = ','.join(create_list_str(surname))
+        name = re.search(r'(\+7|8)[- _]*\(?[- _]*(\d{3}[- _]*\)?([- _]*\d){7}|\d\d[- _]*\d\d[- _]*\)?([- _]*\d){6}).*', u)
+        phone = name.group(0).split(',')[0]
+        name = re.findall(r'[0-9]', phone)
+        if len(name) > 11:
+            return f"+7({''.join(name[1:4])}){''.join(name[4:10])} доб.{''.join(name[11:])}"
+        else:
+            return f"+7({''.join(name[1:4])}){''.join(name[4:10])}"
+
+    except:
+        return f'Телефон не найден'
+
+
+#Функция финально заполняет список и добавляет этот список как строчку в новый файл csv
+def info_aboute_fio(surname): 
+    final_list = []
+    for x in serarc_fio(surname).split():
+        final_list.append(x)
+    final_list.append(serarc_organiza(surname))
+    final_list.append(serarc_position(surname))
+    final_list.append(serarc_phone(surname))
+    final_list.append(serarc_email(surname))
+    print(final_list)
+
+
+print()
+for x in create_dict_surname(feo_plus_index(contacts_list)).keys():
+    info_aboute_fio(x)
 
 
 
@@ -126,6 +155,33 @@ print(serarc_email('Лагунцов'))
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# def serarc_phone2(phone):
+#     try:
+#         name = re.findall(r'[0-9]', phone)
+#         return f"+7({''.join(name[1:4])}){''.join(name[4:10])} доб.{''.join(name[11:])}"
+#     except:         
+#         return f'что-то не так'
+
+
+#print(serarc_phone2(serarc_phone('Лагунцов')))
 
 
 
