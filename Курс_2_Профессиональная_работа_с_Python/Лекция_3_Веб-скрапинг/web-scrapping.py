@@ -2,23 +2,134 @@ import requests
 from bs4 import BeautifulSoup
 
 headers = {'User-Agent': 'Mozilla/5.0'}  #Оказывается нужно передавать user-agent для сайта Хабр ну или не только для него 
-
 ret = requests.get('https://habr.com/ru/all/', headers=headers)
 ret = ret.text
 soup = BeautifulSoup(ret, features='html.parser')
 
-#Получить всю статью с, почемуто, не полной вложенностью через web 
-articles = soup.find(id='589727')         #(class_="tm-article-snippet__title-link")#('article', id='589727') 
-#print(articles) 
+#По заданию определяем список слов для поиска 
+keyworlds = ['дизайн', 'фото', 'web', 'python', 'Neovim']
 
-#Получить название статьи
-title_from_articles = articles.find(class_="tm-article-snippet__title-link")
-print(title_from_articles.text)
+#Список статеек где есть подходящие слова 
+list_article = []
+#Получить все статьи по тегу article, статеек обычно 20 штук
+text_for_get_id = soup.find_all('article')
+for one_article in text_for_get_id:
+    #print(one_article.text)
+    for one_word_from_list in keyworlds:
+        if one_word_from_list in one_article.text:
+            #Найденое слово
+            print(one_word_from_list)
+            #Получить <Дату>
+            date_from_articles = one_article.find('span', class_="tm-article-snippet__datetime-published")
+            print(date_from_articles.find('time').attrs['title'])
+            #Получить <заголовок> 
+            title_from_articles = one_article.find(class_="tm-article-snippet__title-link")
+            print(title_from_articles.text)
+            #Получить <Ссылку> 
+            #ДОПИСАТЬ ПОЛУЧЕНИЕ ССЫЛКИ И ЗАПОЛНЕНИЕ СПИСКА ИЛИ СЛОВАРЯ ДЛЯ КАЖДОЙ СТАТЬИ 
+            #СЛОВАРЬ КЛЮЧ = Название статьи ЗНАЧЕНИЕ = список из всего остального 
 
-#Получить ссылка на хабы 
-hubs_from_articles = articles.find_all('div', class_='tm-article-snippet__hubs')
-for x in hubs_from_articles:
-    print(x.text)
+
+
+
+
+
+
+
+
+
+
+
+    #print('xxxxxxxxxxxxxxxxxxxxxxxx')
+    #print('xxxxxxxxxxxxxxxxxxxxxxxx')
+
+
+
+
+# mylist = ['abc123', 'def456', 'ghi789', 'ABC987', 'aBc654']
+# sub = 'abc'
+
+# print "\n".join(s for s in mylist if sub.lower() in s.lower())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# если в тексте есть слово из списка то сохранить статью с список 
+# если нет проверить следующею статью и следующее слово 
+
+
+
+
+# #Получиь] всю статью с, почемуто, не полной вложенностью через web 
+# articles = soup.find(id='590237')         #(class_="tm-article-snippet__title-link")#('article', id='589727') 
+# #print(articles) 
+
+# #Получить название статьи
+# title_from_articles = articles.find(class_="tm-article-snippet__title-link")
+# print(title_from_articles.text)
+
+# #Получить ссылка на хабы 
+# hubs_from_articles = articles.find_all('div', class_='tm-article-snippet__hubs')
+# for x in hubs_from_articles:
+#     print(x.text)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
