@@ -48,7 +48,7 @@ def email_reader_gave_dict():
                 
                 try:
                     for x in decode_header(msg["CC"]):
-                        if '@magnit.ru' in str(x[0]):
+                        if '@domen.ru' in str(x[0]):
                             x2 = re.findall(r'(?<=<).*.ru', str(x[0]))[0]
                             email_from_copy.append(x2)
                 except:
@@ -101,7 +101,7 @@ def get_login_user(dict_from_email):
     user_login = re.findall(r'(?<=УЗ:|уз:|Уз:).*', body)
     for x in user_login:
         for x2 in re.split(',| |\r', x): 
-            y = x2.rstrip('@magnit.ru')
+            y = x2.rstrip('@domen.ru')
             if y not in cortege_login and y != '':
                 cortege_login.append(y)    
     return cortege_login 
@@ -110,7 +110,7 @@ def get_login_user(dict_from_email):
 
 #Проверка есть ли minashvili в копии, если да то дергать функцию проверки тела сообщения 
 def manager_letter(dict_from_email):
-    if 'minashvili@magnit.ru' in dict_from_email['received_copy'] or 'minashvili@magnit.ru' in dict_from_email['sender']:
+    if 'test@domen.ru' in dict_from_email['received_copy'] or 'test@domen' in dict_from_email['sender']:
         print('Вызов функции парсинга шаблонов команд')
 #manager_letter(email_reader_gave_dict())
 
