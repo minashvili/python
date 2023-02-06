@@ -21,5 +21,4 @@ json = {
 }
 
 api_respone = requests.post(api_url, auth=(auth1['user'], auth1['pass']), json=json, verify=False)
-one_list = api_respone.json()
 pprint(api_respone.json())
